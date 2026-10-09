@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "halacha-rag",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "observability": { "enabled": true },
+
+  // Workers AI: embeddings (bge-m3) + answer generation (Llama 3.3 70B)
+  "ai": { "binding": "AI" },
+
+  // Vector index. Create once with:
+  //   npx wrangler vectorize create halacha-qa --dimensions=1024 --metric=cosine
+  "vectorize": [{ "binding": "VECTORIZE", "index_name": "halacha-qa" }],
+
+  // Non-secret config. Secrets (tokens) are set with `wrangler secret put` — see README.
+  "vars": {
+    "EMBEDDING_MODEL": "@cf/baai/bge-m3",
+    "CHAT_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "OPENROUTER_MODEL": "meta-llama/llama-3.3-70b-instruct:free",
+    "RABBI_NAME": "the Rabbi",
+    "TOP_K": "5",
+    "MIN_SCORE": "0.45",
+    "GRAPH_API_VERSION": "v23.0"
+  }
+}

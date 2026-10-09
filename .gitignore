@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.DS_Store
+# Raw chat exports and parsed data contain private messages — never commit them.
+data/*
+!data/.gitkeep

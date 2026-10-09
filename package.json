@@ -1,0 +1,26 @@
+{
+  "name": "halacha-rag-whatsapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RAG-powered WhatsApp assistant that answers halacha questions from an archived rabbi Q&A chat, with cited sources. Runs on Cloudflare Workers + Vectorize + Workers AI.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --remote",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "senders": "tsx scripts/parse-chat.ts --list-senders",
+    "parse": "tsx scripts/parse-chat.ts",
+    "ingest": "tsx scripts/ingest.ts",
+    "ask": "tsx scripts/ask.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p scripts/tsconfig.json"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261006.1",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0",
+    "wrangler": "^4.40.0"
+  }
+}
