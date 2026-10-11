@@ -37,6 +37,7 @@ async function handleIncoming(env: Env, msg: { id: string; from: string; type: s
 export default {
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
+    console.log(`[HTTP] ${req.method} ${url.pathname}`);
 
     // ---- Health check
     if (url.pathname === "/" && req.method === "GET") {
@@ -57,10 +58,14 @@ export default {
     // ---- WhatsApp incoming messages
     if (url.pathname === "/webhook" && req.method === "POST") {
       const raw = await req.text();
-      if (!(await verifySignature(raw, req.headers.get("x-hub-signature-256"), env.WHATSAPP_APP_SECRET))) {
+      console.log(`[Webhook received] ${raw.slice(0, 500)}`);
+      const valid = await verifySignature(raw, req.headers.get("x-hub-signature-256"), env.WHATSAPP_APP_SECRET);
+      if (!valid) {
+        console.error(`[Webhook] Invalid signature! Received header: ${req.headers.get("x-hub-signature-256")}`);
         return new Response("Invalid signature", { status: 401 });
       }
       const messages = extractMessages(JSON.parse(raw));
+      console.log(`[Webhook] Extracted ${messages.length} messages`);
       // Ack immediately (Meta retries if we're slow); do the RAG work in the background.
       for (const msg of messages) ctx.waitUntil(handleIncoming(env, msg));
       return new Response("OK", { status: 200 });
