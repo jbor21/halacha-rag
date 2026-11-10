@@ -33,9 +33,7 @@ flowchart LR
 - Node 18+ and a free [Cloudflare account](https://dash.cloudflare.com/sign-up)
 - A [Meta developer account](https://developers.facebook.com/) (for WhatsApp)
 - `npm install`
-
-> [!IMPORTANT]
-> The chat has other people's messages in it. Get permission from the rabbi and the group admin before you index it. Never commit `data/`; it is already in `.gitignore`.
+- Your own WhatsApp chat export to build the index from (see step 2). It goes in `data/`, which is gitignored.
 
 ### 1. Cloudflare: log in, create the vector index, deploy
 ```bash
